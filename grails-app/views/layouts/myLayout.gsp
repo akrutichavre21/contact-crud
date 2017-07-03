@@ -24,23 +24,35 @@
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <ul class="navbar-right nav navbar-nav">
-            <li><g:link action="show"><b>List</b></g:link></li>
-            <li><g:link action="index"><b>Create</b></g:link></li>
-
+            <li><g:link controller="testgroup" action="show"><b>View Group</b></g:link></li>
+            <li><g:link controller="testgroup" action="index"><b>Create Group</b></g:link></li>
+            <li><g:link controller="test" action="show"><b>View Contacts</b></g:link></li>
+            <li><g:link controller="test" action="index"><b>Create Contact</b></g:link></li>
         </ul>
+    <div class="navbar-header">
+        <a class="navbar-brand" href="#">My Contacts</a>
+    </div>
+    <ul class="nav navbar-nav">
+        <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Page 1
+                <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                <li> hi </li>
+                <li><a href="/test/show">View Group</a></li>
+                <li><a href="/test/index">Create Group</a></li>
+                <li><a href="#">Page 1-3</a></li>
+            </ul>
+        </li>
+    </ul>
     </div>
 </nav>
 <div class="container">
-<g:layoutBody/>
-    </div>
-%{--
-
-<div id="spinner" class="spinner" style="display:none;">
-    <g:message code="spinner.alt" default="Loading&hellip;"/>
+    <g:layoutBody/>
 </div>
-
-<asset:javascript src="application.js"/>
---}%
-
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://code.jquery.com/jquery.js"></script>
+<!-- Include all compiled plugins (below), or include individual files
+        as needed -->
+<script src="js/bootstrap.min.js"></script>
 </body>
 </html>

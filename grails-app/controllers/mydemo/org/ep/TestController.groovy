@@ -3,23 +3,22 @@ package mydemo.org.ep
 class TestController {
 
     def index() {
-
+        [myInstance: TestGroup.list()]
     }
 
     def save() {
         Test test = new Test()
         test.firstName = params.fname
         test.lastName = params.lname
-        test.save()
+        test.myGroup = TestGroup.get(Integer.parseInt(params.groupId))
+
+        test.save(flush: true)
+        flash.successCreate = "Contact has been successfully created."
         redirect(action: "show")
     }
 
     def show() {
         List listInstance = Test.list()
-/*        println "${Test.getAll()}"
-        println "${Test.getAll([5,6,7])}"
-        println "${Test.getAll(5,6,7)}"*/
-
         render(view: 'show', model: [abc:listInstance])
     }
 
@@ -52,6 +51,8 @@ class TestController {
         def editInstance = Test.get(id)
         editInstance.firstName = params.fname
         editInstance.lastName = params.lname
+        editInstance.myGroup = TestGroup.get(Integer.parseInt(params.groupId))
+        editInstance.save(flush: true)
         flash.successUp = "Successfully Updated"
         redirect(action: "show")
     }

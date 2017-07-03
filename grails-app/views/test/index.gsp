@@ -18,11 +18,19 @@
 <div class="col-md-4">
     <form action="/test/save" method="post" >
         <label>Enter First Name :</label>
-        <input type="text" name="fname" class="form-control"/>
+        <input type="text" name="fname" class="form-control" required/>
         <br>
         <br>
         <label>Enter Last Name :</label>
-        <input type="text" name="lname" class="form-control"/>
+        <input type="text" name="lname" class="form-control" required/>
+        <br>
+        <br>
+        <label>Select Group Names :</label>
+        <select name="groupId" class="form-control">
+            <g:each in="${myInstance}">
+                <option value="${it.id}">${it.name}</option>
+            </g:each>
+        </select>
         <br>
         <br>
         <input type="submit" class="btn btn-primary btn-block">

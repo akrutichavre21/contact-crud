@@ -9,6 +9,9 @@
 <body>
 <br>
 <br>
+<g:if test="${flash.successCreate}">
+    <div class=" alert alert-success">${flash.successCreate}</div>
+</g:if>
 <g:if test="${flash.successDel}">
     <div class=" alert alert-success">${flash.successDel}</div>
 </g:if>
@@ -41,6 +44,9 @@
             Last Name
         </th>
         <th>
+            Group Name
+        </th>
+        <th>
             Action
         </th>
     </tr>
@@ -57,8 +63,11 @@
                 ${it.lastName}
             </td>
             <td>
-                <g:link action="delete" id="${it.id}" class="btn btn-danger">Delete</g:link>
-                <g:link action="update" id="${it.id}" class="btn btn-info">Update</g:link>
+                ${it.myGroup.name}
+            </td>
+            <td>
+                <g:link  controller="test" action="delete" id="${it.id}" class="btn btn-danger">Delete</g:link>
+                <g:link controller="test" action="update" id="${it.id}" class="btn btn-info">Update</g:link>
             </td>
         </tr>
 
