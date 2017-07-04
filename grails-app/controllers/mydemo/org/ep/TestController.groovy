@@ -3,57 +3,115 @@ package mydemo.org.ep
 class TestController {
 
     def index() {
-        [myInstance: TestGroup.list()]
+        println "session id - ${session.myUserId}"
+
+        if (session.myUserId) {
+            println "Session is present"
+            [myInstance: TestGroup.list()]
+        } else {
+            println "Session is not present"
+            flash.notLogin = "User not logged in."
+            redirect controller: "mylogin", action: "index"
+        }
+
     }
 
-    def save() {
-        Test test = new Test()
-        test.firstName = params.fname
-        test.lastName = params.lname
-        test.myGroup = TestGroup.get(Integer.parseInt(params.groupId))
 
-        test.save(flush: true)
-        flash.successCreate = "Contact has been successfully created."
-        redirect(action: "show")
+    def save() {
+
+        if (session.myUserId) {
+            println "Session is present"
+            Test test = new Test()
+            test.firstName = params.fname
+            test.lastName = params.lname
+            test.myGroup = TestGroup.get(Integer.parseInt(params.groupId))
+
+            test.save(flush: true)
+            flash.successCreate = "Contact has been successfully created."
+            redirect(action: "show")
+        }
+
+        else {
+            println "Session is not present"
+            flash.notLogin = "User not logged in."
+            redirect controller: "mylogin", action: "index"
+        }
     }
 
     def show() {
-        List listInstance = Test.list()
-        render(view: 'show', model: [abc:listInstance])
+        if (session.myUserId) {
+            List listInstance = Test.list()
+            render(view: 'show', model: [abc:listInstance])
+        }
+
+        else {
+            println "Session is not present"
+            flash.notLogin = "User not logged in."
+            redirect controller: "mylogin", action: "index"
+        }
+
     }
 
     def delete() {
-        def deleteInstance = Test.get(params.id)
-        println deleteInstance
 
-        if(deleteInstance == null) {
-            flash.unsuccessDel = "Cannot Delete!! User with Id ${params.id} doesn't exist."
+        if (session.myUserId) {
+            def deleteInstance = Test.get(params.id)
+            println deleteInstance
+
+            if(deleteInstance == null) {
+                flash.unsuccessDel = "Cannot Delete!! User with Id ${params.id} doesn't exist."
+                redirect(action: "show")
+                return
+            }
+            deleteInstance.delete()
+            flash.successDel = "Successfully Deleted."
             redirect(action: "show")
-            return
         }
-        deleteInstance.delete()
-        flash.successDel = "Successfully Deleted."
-        redirect(action: "show")
+
+        else {
+            println "Session is not present"
+            flash.notLogin = "User not logged in."
+            redirect controller: "mylogin", action: "index"
+        }
+
     }
 
     def update() {
-        def updateInstance = Test.get(params.id)
-        if(updateInstance == null) {
-            flash.unsuccessUp = "Cannot Update!! User with Id ${params.id} doesn't exist."
-            redirect(action: "show")
-            return
+
+        if (session.myUserId) {
+            def updateInstance = Test.get(params.id)
+            if(updateInstance == null) {
+                flash.unsuccessUp = "Cannot Update!! User with Id ${params.id} doesn't exist."
+                redirect(action: "show")
+                return
+            }
+            [updateInstance: updateInstance]
         }
-        [updateInstance: updateInstance]
+
+        else {
+            println "Session is not present"
+            flash.notLogin = "User not logged in."
+            redirect controller: "mylogin", action: "index"
+        }
+
     }
 
     def edit() {
-        def id = Integer.parseInt(params.id)
-        def editInstance = Test.get(id)
-        editInstance.firstName = params.fname
-        editInstance.lastName = params.lname
-        editInstance.myGroup = TestGroup.get(Integer.parseInt(params.groupId))
-        editInstance.save(flush: true)
-        flash.successUp = "Successfully Updated"
-        redirect(action: "show")
+
+        if(session.myUserId){
+                def id = Integer.parseInt(params.id)
+                def editInstance = Test.get(id)
+                editInstance.firstName = params.fname
+                editInstance.lastName = params.lname
+                editInstance.myGroup = TestGroup.get(Integer.parseInt(params.groupId))
+                editInstance.save(flush: true)
+                flash.successUp = "Successfully Updated"
+                redirect(action: "show")
+        }
+        else {
+            println "Session is not present"
+            flash.notLogin = "User not logged in."
+            redirect controller: "mylogin", action: "index"
+        }
     }
 }

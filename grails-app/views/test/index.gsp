@@ -16,6 +16,9 @@
 <br>
 <br>
 <div class="col-md-4">
+    <g:if test="${flash.loginSuccess}">
+        <div class=" alert alert-success">${flash.loginSuccess}</div>
+    </g:if>
     <form action="/test/save" method="post" >
         <label>Enter First Name :</label>
         <input type="text" name="fname" class="form-control" required/>
